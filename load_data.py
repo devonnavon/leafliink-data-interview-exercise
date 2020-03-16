@@ -147,17 +147,17 @@ def main_data_pipe(bucket_name, iam_creds, redshift_conn, table_name, nodes):
     nodes = int, number of nodes in redshift cluster for efficient s3 copy
     '''
     #get_all objects from bucket
-    object_list = ld.get_objects(bucket_name)
+    object_list = get_objects(bucket_name)
     #read_json files from object list
-    file_dict = ld.read_jsons(object_list)
+    file_dict = read_jsons(object_list)
     #format and build dataframe
-    df = ld.dict_to_df(file_dict)
+    df = dict_to_df(file_dict)
     #stage file in s3
-    s3_files = ld.split_stage_files(df, nodes, bucket=bucket_name)
+    s3_files = split_stage_files(df, nodes, bucket=bucket_name)
     #create table if it exists
-    ld.create_table(redshift_conn, df, table_name)
+    create_table(redshift_conn, df, table_name)
     #copy files from staging folder to S3
-    ld.copy_csv(redshift_conn, bucket_name, table_name, iam_creds)
+    copy_csv(redshift_conn, bucket_name, table_name, iam_creds)
     close connection
     redshift_conn.close()
 
