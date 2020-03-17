@@ -158,7 +158,7 @@ def main_data_pipe(bucket_name, iam_creds, redshift_conn, table_name, nodes):
     create_table(redshift_conn, df, table_name)
     #copy files from staging folder to S3
     copy_csv(redshift_conn, bucket_name, table_name, iam_creds)
-    close connection
+    #close connection
     redshift_conn.close()
 
 ###WOULD NEED TO EDIT WITH REDSHIFT CONNECTION INFO
